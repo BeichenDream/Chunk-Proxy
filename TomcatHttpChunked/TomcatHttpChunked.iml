@@ -7,18 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../java-socks-proxy-server/out/artifacts/java_socks_proxy_server_jar/java-socks-proxy-server.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/../../java-socks-proxy-server/src/main/java" />
-          <root url="file://$MODULE_DIR$/../../java-socks-proxy-server/src/test/java" />
-        </SOURCES>
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="java-socks-proxy-server" level="project" />
     <orderEntry type="module" module-name="utils" />
   </component>
 </module>

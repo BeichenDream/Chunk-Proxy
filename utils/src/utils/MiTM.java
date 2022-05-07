@@ -7,11 +7,7 @@ import java.security.cert.X509Certificate;
 
 public class MiTM extends X509ExtendedTrustManager implements javax.net.ssl.TrustManager, javax.net.ssl.X509TrustManager {
 
-    static {
-        trustAllHttpsCertificates();
-    }
-
-    private static void trustAllHttpsCertificates() {
+    public static void trustAllHttpsCertificates() {
         try {
             javax.net.ssl.TrustManager[] trustAllCerts = new javax.net.ssl.TrustManager[1];
             javax.net.ssl.TrustManager tm = new MiTM();
@@ -22,6 +18,7 @@ public class MiTM extends X509ExtendedTrustManager implements javax.net.ssl.Trus
             SSLContext sc2 = SSLContext.getInstance("TLS");
             sc2.init(null, trustAllCerts, new java.security.SecureRandom());
             HttpsURLConnection.setDefaultSSLSocketFactory(sc2.getSocketFactory());
+            HttpsURLConnection.setDefaultHostnameVerifier(new TrustAnyHostnameVerifier());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,11 +68,5 @@ public class MiTM extends X509ExtendedTrustManager implements javax.net.ssl.Trus
     @Override
     public void checkServerTrusted(X509Certificate[] x509Certificates, String s, SSLEngine sslEngine) throws CertificateException {
 
-    }
-}
-class TrustAnyHostnameVerifier implements HostnameVerifier {
-    @Override
-    public boolean verify(String hostname, SSLSession session) {
-        return true;
     }
 }

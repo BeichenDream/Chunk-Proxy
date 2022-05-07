@@ -1,22 +1,18 @@
 package proxy.chunked.tomcat;
 
 import org.bbottema.javasocksproxyserver.ProxyHandler;
-import sun.misc.Unsafe;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.UUID;
 
-import static utils.JavaUnsafe.*;
+import static utils.JavaUnsafe.setFieldValue;
 
 public class ChunkProxyHandler extends ProxyHandler {
     public static final byte connectSucceed = 0x01;
@@ -67,8 +63,14 @@ public class ChunkProxyHandler extends ProxyHandler {
             m_ServerOutput.flush();
 
             setFieldValue(m_ServerOutput,"closed",true);
+
+            client.setReadTimeout(5000);
+
             m_ServerInput=client.getInputStream();
+
             setFieldValue(m_ServerOutput,"closed",false);
+
+            client.setReadTimeout(0);
 
             byte[] serverHandshake = readInputStream(m_ServerInput,16);
 
@@ -85,6 +87,7 @@ public class ChunkProxyHandler extends ProxyHandler {
                 throw new IOException("第一次握手协商失败");
             }
         }catch(Exception e){
+            e.printStackTrace();
             throw new IOException(e.getMessage());
         }
     }

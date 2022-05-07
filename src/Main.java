@@ -1,8 +1,9 @@
 import proxy.chunked.tomcat.ChunkProxyHandler;
+import utils.MiTM;
 
 public class Main {
     public static void main(String[] args) throws Throwable {
-
+        MiTM.trustAllHttpsCertificates();
         if (args.length == 3 && (args[2].startsWith("https://")||args[2].startsWith("http://"))){
 
             String type = args[0];
